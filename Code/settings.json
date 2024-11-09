@@ -1,0 +1,67 @@
+{
+  "explorer.confirmDelete": false,
+  "liveServer.settings.donotShowInfoMsg": true,
+  "editor.linkedEditing": true,
+  "workbench.sideBar.location": "right",
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "tabnine.experimentalAutoImports": true,
+  "explorer.confirmDragAndDrop": false,
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "terminal.integrated.env.windows": {},
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "editor.minimap.enabled": false,
+  "editor.scrollbar.vertical": "visible",
+  "editor.scrollbar.verticalScrollbarSize": 8,
+  "workbench.colorCustomizations": {
+    "outputView.background": "#131313"
+  },
+  "editor.wordWrap": "on",
+  "workbench.tree.indent": 10,
+  "editor.fontLigatures": true,
+  "editor.fontFamily": "'Monaspace Krypton', 'Courier New', monospace",
+  "terminal.integrated.fontWeight": "normal",
+  "terminal.integrated.fontSize": 14,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.formatOnSave": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.lineNumbers": "relative",
+  "editor.smoothScrolling": true,
+  "editor.suggest.insertMode": "replace",
+  "editor.suggestFontSize": 14,
+  "workbench.layoutControl.enabled": false,
+  "workbench.editor.editorActionsLocation": "hidden",
+  "window.commandCenter": false,
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.fontSize": 14,
+  "security.workspace.trust.untrustedFiles": "open",
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.cursorStyleInactive": "underline",
+  "editor.stickyScroll.enabled": false,
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "dart.flutterSdkPath": "C:\\flutter",
+  "workbench.iconTheme": "moxer-icons",
+  "workbench.colorTheme": "Aura Dark (Soft Text)",
+  "git.openRepositoryInParentFolders": "never",
+  "terminal.explorerKind": "external",
+  "terminal.external.windowsExec": "C:\\Program Files\\Git",
+  "editor.cursorBlinking": "expand",
+  "vim.insertModeKeyBindings": [
+    {
+      "before": ["k", "j"],
+      "after": ["<Esc>"]
+    }
+  ],
+  "vim.startInInsertMode": true
+}
