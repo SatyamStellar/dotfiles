@@ -1,0 +1,17 @@
+# ~/.config/alacritty/alacritty.yml
+window:
+  opacity: 1
+  decorations: none
+
+font:
+  normal:
+    family: JetBrainsMono Nerd Font
+    style: Regular # Options: Regular, Bold, Italic, etc.
+
+  # Optionally, set specific styles for bold and italic
+  bold:
+    family: JetBrainsMono Nerd Font
+    style: Bold
+  italic:
+    family: JetBrainsMono Nerd Font
+    style: Italic
