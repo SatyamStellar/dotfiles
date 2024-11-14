@@ -1,107 +1,72 @@
 return {
-  "nvim-lualine/lualine.nvim",
-  event = "VeryLazy",
-  init = function()
-    vim.g.lualine_laststatus = vim.o.laststatus
-    if vim.fn.argc(-1) > 0 then
-      -- set an empty statusline till lualine loads
-      vim.o.statusline = " "
-    else
-      -- hide the statusline on the starter page
-      vim.o.laststatus = 0
-    end
-  end,
-  opts = function()
-    -- PERF: we don't need this lualine require madness 🤷
-    local lualine_require = require("lualine_require")
-    lualine_require.require = require
-
-    local icons = require("lazyvim.config").icons
-    local Util = require("lazyvim.util")
-
-    vim.o.laststatus = vim.g.lualine_laststatus
-
-    return {
-      options = {
-        theme = "auto",
-        globalstatus = true,
-        disabled_filetypes = { statusline = { "dashboard", "alpha", "starter" } },
-      },
-      sections = {
-        lualine_a = { "mode" },
-        lualine_b = { "branch" },
-
-        lualine_c = {
-          Util.lualine.root_dir(),
-          {
-            "diagnostics",
-            symbols = {
-              error = icons.diagnostics.Error,
-              warn = icons.diagnostics.Warn,
-              info = icons.diagnostics.Info,
-              hint = icons.diagnostics.Hint,
-            },
-          },
-          { "filetype",                icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-          { Util.lualine.pretty_path() },
-          {
-            require("package-info").get_status,
-            color = Util.ui.fg("Statement"),
-          },
-          {
-            function()
-              return require("nvim-navic").get_location()
-            end,
-            cond = function()
-              return package.loaded["nvim-navic"] and require("nvim-navic").is_available()
-            end,
-          },
+    'nvim-lualine/lualine.nvim',
+    config = function()
+      local mode = {
+        'mode',
+        fmt = function(str)
+          return ' ' .. str
+          -- return ' ' .. str:sub(1, 1) -- displays only the first character of the mode
+        end,
+      }
+  
+      local filename = {
+        'filename',
+        file_status = true, -- displays file status (readonly status, modified status)
+        path = 0, -- 0 = just filename, 1 = relative path, 2 = absolute path
+      }
+  
+      local hide_in_width = function()
+        return vim.fn.winwidth(0) > 100
+      end
+  
+      local diagnostics = {
+        'diagnostics',
+        sources = { 'nvim_diagnostic' },
+        sections = { 'error', 'warn' },
+        symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
+        colored = false,
+        update_in_insert = false,
+        always_visible = false,
+        cond = hide_in_width,
+      }
+  
+      local diff = {
+        'diff',
+        colored = false,
+        symbols = { added = ' ', modified = ' ', removed = ' ' }, -- changes diff symbols
+        cond = hide_in_width,
+      }
+  
+      require('lualine').setup {
+        options = {
+          icons_enabled = true,
+          theme = 'gruvbox', -- Set theme based on environment variable
+          -- Some useful glyphs:
+          -- https://www.nerdfonts.com/cheat-sheet
+          --        
+          section_separators = { left = '', right = '' },
+          component_separators = { left = '', right = '' },
+          disabled_filetypes = { 'alpha', 'neo-tree' },
+          always_divide_middle = true,
         },
-        lualine_x = {
-          -- stylua: ignore
-          {
-            function() return require("noice").api.status.command.get() end,
-            cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
-            color = Util.ui.fg("Statement"),
-          },
-          -- stylua: ignore
-          {
-            function() return require("noice").api.status.mode.get() end,
-            cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-            color = Util.ui.fg("Constant"),
-          },
-          -- stylua: ignore
-          {
-            function() return "  " .. require("dap").status() end,
-            cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,
-            color = Util.ui.fg("Debug"),
-          },
-          {
-            require("lazy.status").updates,
-            cond = require("lazy.status").has_updates,
-            color = Util.ui.fg("Special"),
-          },
-          {
-            "diff",
-            symbols = {
-              added = icons.git.added,
-              modified = icons.git.modified,
-              removed = icons.git.removed,
-            },
-            source = function()
-              local gitsigns = vim.b.gitsigns_status_dict
-              if gitsigns then
-                return {
-                  added = gitsigns.added,
-                  modified = gitsigns.changed,
-                  removed = gitsigns.removed,
-                }
-              end
-            end,
-          },
+        sections = {
+          lualine_a = { mode },
+          lualine_b = { 'branch' },
+          lualine_c = { filename },
+          lualine_x = { diagnostics, diff, { 'encoding', cond = hide_in_width }, { 'filetype', cond = hide_in_width } },
+          lualine_y = { 'location' },
+          lualine_z = { 'progress' },
         },
-      },
-      extensions = { "neo-tree", "lazy" },
-    }
-  end,
-}
+        inactive_sections = {
+          lualine_a = {},
+          lualine_b = {},
+          lualine_c = { { 'filename', path = 1 } },
+          lualine_x = { { 'location', padding = 0 } },
+          lualine_y = {},
+          lualine_z = {},
+        },
+        tabline = {},
+        extensions = { 'fugitive' },
+      }
+    end,
+  }
