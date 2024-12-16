@@ -16,11 +16,12 @@ vim.opt.rtp:prepend(lazypath)
 -- [[ Configure and install plugins ]]
 require("lazy").setup({
 
-	-- Neotree
-
+	"DaikyXendo/nvim-material-icon",
 	require("plugins.neotree"),
 	require("plugins.colortheme"),
 	-- require("plugins.catppuccin"),
+	-- require("plugins.themes.rose-pine"),
+	-- require("plugins.themes.onedark"),
 	require("plugins.bufferline"), --TOP bufferLine
 	require("plugins.lualine"),
 	require("plugins.treesitter"),
@@ -34,11 +35,9 @@ require("lazy").setup({
 	require("plugins.toggleterm"),
 	require("plugins.rename"),
 	require("plugins.luasnip-react-snippits"),
-	require("plugins.comment"),
-	require("plugins.dressing"),
-	require("plugins.todo-comments"),
-	require("plugins.trouble"),
-	require("plugins.surround"),
+	-- require("plugins.csharp-snippets"),
+	-- require("plugins.csharp-file-templates"),
+	require("plugins.visual-multi"),
 })
 
 -- To check the status of your plugins, use :Lazy
