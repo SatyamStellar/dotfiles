@@ -1,42 +1,135 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+ #  Zshrc Config
 
-export ZSH="$HOME/.oh-my-zsh"
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
 
-ZSH_THEME="heapbytes"
+#   Vars
+export VISUAL="${EDITOR}"
+export EDITOR='geany'
+export BROWSER='firefox'
+export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
+export SUDO_PROMPT="Deploying root access for %u. Password pls: "
+export BAT_THEME="base16"
 
-plugins=(
-    git
-    archlinux
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-)
+if [ -d "$HOME/.local/bin" ] ;
+  then PATH="$HOME/.local/bin:$PATH"
+fi
 
-source $ZSH/oh-my-zsh.sh
+#  Load Ending
+autoload -Uz compinit
 
-# Check archlinux plugin commands here
-# https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/archlinux
+for dump in ~/.config/zsh/zcompdump(N.mh+24); do
+  compinit -d ~/.config/zsh/zcompdump
+done
 
-# Display Pokemon-colorscripts
-# Project page: https://gitlab.com/phoneybadger/pokemon-colorscripts#on-other-distros-and-macos
-#pokemon-colorscripts --no-title -s -r
+compinit -C -d ~/.config/zsh/zcompdump
 
-# fastfetch. Will be disabled if above colorscript was chosen to install
-#fastfetch -c $HOME/.config/fastfetch/config-compact.jsonc
+autoload -Uz add-zsh-hook
+autoload -Uz vcs_info
+precmd () { vcs_info }
+_comp_options+=(globdots)
 
-# Set-up icons for files/folders in terminal
-alias ls='eza -a --icons'
-alias ll='eza -al --icons'
-alias lt='eza -a --tree --level=1 --icons'
+zstyle ':completion:*' verbose true
+zstyle ':completion:*:*:*:*:*' menu select
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS} 'ma=48;5;197;1'
+zstyle ':completion:*' matcher-list \
+		'm:{a-zA-Z}={A-Za-z}' \
+		'+r:|[._-]=* r:|=*' \
+		'+l:|=*'
+zstyle ':completion:*:warnings' format "%B%F{red}No matches for:%f %F{magenta}%d%b"
+zstyle ':completion:*:descriptions' format '%F{yellow}[-- %d --]%f'
+zstyle ':vcs_info:*' formats ' %B%s-[%F{magenta}%f %F{yellow}%b%f]-'
+
+#  Waiting Dots
+expand-or-complete-with-dots() {
+  echo -n "\e[31m…\e[0m"
+  zle expand-or-complete
+  zle redisplay
+}
+zle -N expand-or-complete-with-dots
+bindkey "^I" expand-or-complete-with-dots
+
+#History
+HISTFILE=~/.config/zsh/zhistory
+HISTSIZE=5000
+SAVEHIST=5000
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+
+#  ┌─┐┌─┐┬ ┬  ┌─┐┌─┐┌─┐┬    ┌─┐┌─┐┌┬┐┬┌─┐┌┐┌┌─┐
+#  ┌─┘└─┐├─┤  │  │ ││ ││    │ │├─┘ │ ││ ││││└─┐
+#  └─┘└─┘┴ ┴  └─┘└─┘└─┘┴─┘  └─┘┴   ┴ ┴└─┘┘└┘└─┘
+#
+setopt AUTOCD              # change directory just by typing its name
+setopt PROMPT_SUBST        # enable command substitution in prompt
+setopt MENU_COMPLETE       # Automatically highlight first element of completion menu
+setopt LIST_PACKED		   # The completion menu takes less space.
+setopt AUTO_LIST           # Automatically list choices on ambiguous completion.
+setopt COMPLETE_IN_WORD    # Complete from both ends of a word.
+
+
+#   The prompt
+function dir_icon {
+  if [[ "$PWD" == "$HOME" ]]; then
+    echo "%B%F{cyan}%f%b"
+  else
+    echo "%B%F{cyan}%f%b"
+  fi
+}
+
+PS1='%B%F{blue}%f%b  %B%F{magenta}%n%f%b $(dir_icon)  %B%F{red}%~%f%b${vcs_info_msg_0_} %(?.%B%F{green}.%F{red})%f%b '
+
+# command not found
+command_not_found_handler() {
+	printf "%s%s? I don't know what is it\n" "$acc" "$0" >&2
+    return 127
+}
+
+#  Plugings
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey '^[[3~' delete-char
+
+#  Change terminals title
+function xterm_title_precmd () {
+	print -Pn -- '\e]2;%n@%m %~\a'
+	[[ "$TERM" == 'screen'* ]] && print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-}\e\\'
+}
+
+function xterm_title_preexec () {
+	print -Pn -- '\e]2;%n@%m %~ %# ' && print -n -- "${(q)1}\a"
+	[[ "$TERM" == 'screen'* ]] && { print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-} %# ' && print -n -- "${(q)1}\e\\"; }
+}
+
+if [[ "$TERM" == (kitty*|alacritty*|tmux*|screen*|xterm*) ]]; then
+	add-zsh-hook -Uz precmd xterm_title_precmd
+	add-zsh-hook -Uz preexec xterm_title_preexec
+fi
+
+#  Alias
+alias mirrors="sudo reflector --verbose --latest 5 --country 'United States' --age 6 --sort rate --save /etc/pacman.d/mirrorlist"
+alias update="paru -Syu --nocombinedupgrade"
+alias grub-update="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+
+alias music="ncmpcpp"
+
+alias cat="bat --theme=base16"
+alias ls='eza --icons=always --color=always -a'
+alias ll='eza --icons=always --color=always -la'
+
 alias tmux='tmux -u'
 alias shut='shutdown now'
 alias shutup-baby='shutdown now'
 alias mongo='sudo mongod --config /etc/mongodb.conf'
-#alias tmuxre ='tmux source-file ~/.tmux/.tmux.conf'
-# Set-up FZF key bindings (CTRL R for fuzzy history finder)
-source <(fzf --zsh)
-
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
-setopt appendhistory
+#  Auto start
+$HOME/.local/bin/colorscript -r 
