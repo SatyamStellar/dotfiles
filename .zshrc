@@ -131,5 +131,10 @@ alias tmux='tmux -u'
 alias shut='shutdown now'
 alias shutup-baby='shutdown now'
 alias mongo='sudo mongod --config /etc/mongodb.conf'
+
+alias bk='cd ..'
+alias cls='clear'
+
+
 #  Auto start
 $HOME/.local/bin/colorscript -r 
