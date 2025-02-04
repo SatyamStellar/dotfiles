@@ -33,6 +33,17 @@ return { -- Autocompletion
 		"hrsh7th/cmp-nvim-lsp",
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
+
+		-- GitHub Copilot
+		{
+			"github/copilot.vim",
+			config = function()
+				-- Optional: You can configure Copilot here if needed
+				vim.g.copilot_no_tab_map = true
+				vim.g.copilot_assume_mapped = true
+				vim.g.copilot_tab_fallback = ""
+			end,
+		},
 	},
 	config = function()
 		-- See `:help cmp`
@@ -171,5 +182,8 @@ return { -- Autocompletion
 				end,
 			},
 		})
+
+		-- Optional: You can add keybindings to toggle Copilot
+		vim.api.nvim_set_keymap("n", "<leader>cp", ":Copilot toggle<CR>", { noremap = true, silent = true })
 	end,
 }

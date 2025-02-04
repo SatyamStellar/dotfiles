@@ -1,4 +1,3 @@
- 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 -- Disable the spacebar key's default behavior in Normal and Visual modes
@@ -83,3 +82,12 @@ end, { expr = true })
 vim.keymap.set("n", "<leader>d", "yyp", { desc = "Duplicate line down" })
 -- Copy Line UP
 vim.keymap.set("n", "<leader>du", "yyP", { desc = "Duplicate line up" })
+
+-- Copilot
+
+-- Copilot keybindings
+vim.g.copilot_no_tab_map = true
+vim.keymap.set("i", "<C-]>", 'copilot#Accept("<CR>")', { silent = true, expr = true, noremap = true })
+vim.keymap.set("i", "<C-L>", "<Plug>(copilot-next)", { silent = true })
+vim.keymap.set("i", "<C-H>", "<Plug>(copilot-previous)", { silent = true })
+vim.keymap.set("n", "<leader>cp", "<cmd>Copilot panel<CR>", { desc = "Open Copilot Panel" })
