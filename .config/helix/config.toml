@@ -1,0 +1,9 @@
+theme = "catppuccin_mocha"
+
+[editor]
+auto-completion = true
+completion-trigger-len = 1
+
+[keys.normal."space"]
+"f" = ":sh lf"
+

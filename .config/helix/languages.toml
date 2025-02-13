@@ -1,0 +1,39 @@
+# ~/.config/helix/languages.toml
+
+[[language]]
+name = "html"
+scope = "text.html.basic"
+language-servers = [
+  "vscode-html-language-server",
+  "tailwindcss-language-server", # Tailwind CSS support
+]
+auto-format = true
+
+[[language]]
+name = "css"
+scope = "source.css"
+language-servers = [
+  "vscode-css-language-server",
+  "tailwindcss-language-server", # Tailwind CSS support
+]
+auto-format = true
+
+[[language]]
+name = "javascript"
+scope = "source.js"
+language-servers = [
+  "typescript-language-server",
+  "vscode-eslint-language-server", # Optional, for linting
+  "tailwindcss-language-server", # Tailwind CSS support
+]
+auto-format = true
+
+[[language]]
+name = "typescript"
+scope = "source.ts"
+language-servers = [
+  "typescript-language-server",
+  "vscode-eslint-language-server", # Optional, for linting
+  "tailwindcss-language-server", # Tailwind CSS support
+]
+auto-format = true
