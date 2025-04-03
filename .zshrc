@@ -133,6 +133,8 @@ alias mongo='sudo mongod --config /etc/mongodb.conf'
 
 alias bk='cd ..'
 alias cls='clear'
+alias nv='fg'
+alias xx='exit'
 
 
 #  Auto start
