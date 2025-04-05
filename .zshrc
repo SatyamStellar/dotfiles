@@ -135,6 +135,7 @@ alias bk='cd ..'
 alias cls='clear'
 alias nv='fg'
 alias xx='exit'
+alias vv='nvim'
 
 
 #  Auto start
